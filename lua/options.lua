@@ -25,7 +25,7 @@ end)
 
 -- Enable break indent
 vim.opt.breakindent = false
-vim.opt.linebreak = true
+vim.opt.linebreak = false
 
 -- Save undo history
 vim.opt.undofile = false
