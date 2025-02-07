@@ -26,6 +26,8 @@ end)
 -- Enable break indent
 vim.opt.breakindent = false
 vim.opt.linebreak = false
+vim.opt.wrap = false
+vim.opt.sidescrolloff = 30
 
 -- Save undo history
 vim.opt.undofile = false
