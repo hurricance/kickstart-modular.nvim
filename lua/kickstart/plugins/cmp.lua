@@ -47,6 +47,8 @@ return {
             luasnip.lsp_expand(args.body)
           end,
         },
+        -- Preselect the first completion item so it can be accepted directly.
+        preselect = cmp.PreselectMode.Item,
         completion = { completeopt = 'menu,menuone,noinsert' },
 
         -- For an understanding of why these mappings were

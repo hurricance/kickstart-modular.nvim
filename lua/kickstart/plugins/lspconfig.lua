@@ -80,6 +80,10 @@ return {
           -- Find references for the word under your cursor.
           map('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
 
+          -- Find functions that call, or are called by, the symbol under your cursor.
+          map('<leader>ci', require('telescope.builtin').lsp_incoming_calls, '[C]allers [I]ncoming')
+          map('<leader>co', require('telescope.builtin').lsp_outgoing_calls, '[C]alls [O]utgoing')
+
           -- Jump to the implementation of the word under your cursor.
           --  Useful when your language has ways of declaring types without an actual implementation.
           map('gI', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')
@@ -178,7 +182,7 @@ return {
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
         -- clangd = {},
-        -- gopls = {},
+        gopls = {},
         -- pyright = {},
         -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
@@ -204,6 +208,9 @@ return {
             },
           },
         },
+
+        -- JavaScript, TypeScript, JSX, and TSX language server
+        ts_ls = {},
       }
 
       -- Ensure the servers and tools above are installed
@@ -223,6 +230,15 @@ return {
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
       require('mason-lspconfig').setup {
+        -- Install only the language servers declared above.
+        -- Formatters such as stylua are handled by mason-tool-installer.
+        ensure_installed = vim.tbl_keys(servers),
+        -- StyLua is used by conform.nvim as a formatter, not as an LSP.
+        -- Exclude it because nvim-lspconfig also provides a stylua LSP
+        -- configuration that starts `stylua --lsp`.
+        automatic_enable = {
+          exclude = { 'stylua' },
+        },
         handlers = {
           function(server_name)
             local server = servers[server_name] or {}
